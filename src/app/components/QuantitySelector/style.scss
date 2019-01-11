@@ -1,0 +1,108 @@
+.buttonReset {
+    background-color: transparent;
+    border: 0;
+}
+
+[data-component="QuantitySelector"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        font-size: 20px;
+        margin: 30px 0;
+    }
+
+    .header {
+        width: 480px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 10px;
+
+        .quantity,
+        .char-backspace {
+            height: 50px;
+        }
+
+        [data-component="Tile"]:first-of-type {
+            width: 80%;
+
+            [data-component="Tilt"] {
+                width: 100% !important;
+                float: left !important;
+            }
+
+            .quantity {
+                @extend .buttonReset;
+
+                width: 100%;
+                padding: 0 15px;
+            }
+        }
+
+        [data-component="Tile"]:last-of-type {
+            width: 18%;
+
+            [data-component="Tilt"] {
+                width: 100% !important;
+                float: left !important;
+            }
+
+            .char-backspace {
+                @extend .buttonReset;
+
+                width: 100%;
+                font-size: 14px;
+                text-transform: capitalize;
+                float: left;
+            }
+        }
+    }
+
+    .numpad {
+        $spacing: 10px;
+        $charDimension: 140px;
+
+        width: ($charDimension + ($spacing * 2)) * 3;
+        display: flex;
+        flex-wrap: wrap;
+
+        [data-component="Tile"] {
+            margin: $spacing;
+
+            &.double-width {
+                [data-component="Tilt"] {
+                    width: $charDimension * 2 + $spacing * 2 !important;
+
+                    .char {
+                        width: $charDimension * 2 + $spacing * 2;
+                    }
+                }
+            }
+
+            [data-component="Tilt"] {
+                width: $charDimension !important;
+                height: $charDimension !important;
+                margin: 0 15px 50px 0;
+                padding: 0 !important;
+                transform-style: preserve-3d;
+
+                .char {
+                    @extend .buttonReset;
+
+                    width: $charDimension;
+                    height: $charDimension;
+                    font-size: 40px;
+                    font-weight: 100;
+                    padding: 20px;
+                    transform: translateZ(10px);
+
+                    &.add-button {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

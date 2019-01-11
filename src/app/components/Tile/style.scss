@@ -1,0 +1,23 @@
+[data-component="Tile"] {
+    transition: all 200ms;
+
+    &.clickable {
+        cursor: pointer;
+    }
+
+    &.scaleable {
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    [data-component="Tilt"] {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        color: inherit !important;
+        border-radius: 0 !important;
+        font-size: inherit !important;
+        line-height: inherit !important;
+    }
+}

@@ -1,0 +1,60 @@
+.buttonReset {
+    background-color: transparent;
+    border: 0;
+}
+
+[data-component="Catalog"] {
+    $tileDimension: 120px;
+    $labelHeight: 40px;
+
+    .items {
+        $padding: 15px;
+
+        width: calc(100% + (2 * #{$padding}));
+        position: relative;
+        left: -$padding;
+        padding: $padding;
+        overflow: hidden;
+
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 50px;
+
+        $padding: 10px;
+        .label-container {
+            width: 0;
+            height: $labelHeight;
+            display: flex;
+            align-items: center;
+            position: relative;
+            top: -25px;
+            left: $padding;
+        }
+
+        [data-component="Tile"] {
+            padding-bottom: 38px;
+            margin: 10px;
+
+            [data-component="Tilt"] {
+                width: $tileDimension !important;
+                height: $tileDimension !important;
+                margin: 0 15px 50px 0;
+                padding: 0 !important;
+                transform-style: preserve-3d;
+
+                .item {
+                    @extend .buttonReset;
+
+                    width: $tileDimension;
+                    height: $tileDimension;
+                    padding: $padding;
+                    transform: translateZ(20px);
+
+                    &[disabled] {
+                        opacity: 0.3;
+                    }
+                }
+            }
+        }
+    }
+}
