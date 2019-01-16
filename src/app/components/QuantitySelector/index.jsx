@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import AppContext from 'Helpers/context';
+import repeat from 'ramda/src/times';
+import { context as AppContext } from '@honzachalupa/helpers';
 import './style';
 import Tile from 'Components/Tile';
 
@@ -35,16 +36,14 @@ class QuantitySelector extends Component {
         });
     }
 
-    handleNumberSelect(value) {
+    handleSelect(value) {
         this.setState(prevState => {
-            let { quantity } = prevState;
-
-            quantity = value === 'backspace'
-                ? quantity.substring(0, quantity.length - 1)
-                : `${quantity}${value}`;
+            const { quantity } = prevState;
 
             return {
-                quantity
+                quantity: value === 'backspace'
+                    ? quantity.substring(0, quantity.length - 1)
+                    : `${quantity}${value}`
             };
         });
     }
@@ -57,6 +56,8 @@ class QuantitySelector extends Component {
             _addItemIntoCart(id, quantity);
 
             this.handleRedirection('/');
+        } else {
+            alert('Zadejte prosím množství.');
         }
     }
 
@@ -64,19 +65,8 @@ class QuantitySelector extends Component {
         this.props.history.push(url);
     }
 
-    getCharButton(char) {
-        return (
-            <Tile key={char} className={`char char-${char}`} isScaleable onClick={() => this.handleNumberSelect(char)}>{char}</Tile>
-        );
-    }
-
     render() {
         const { name, quantity } = this.state;
-
-        const numpadBlock = [];
-        for (let i = 1; i <= 9; i += 1) {
-            numpadBlock.push(this.getCharButton(i));
-        }
 
         return (
             <div>
@@ -87,13 +77,15 @@ class QuantitySelector extends Component {
                         <input className="quantity" type="number" onChange={e => this.handleChange(e.target.value)} value={Number(quantity)} />
                     </Tile>
 
-                    {this.getCharButton('backspace')}
+                    <Tile className="char remove-button" isScaleable onClick={() => this.handleSelect('backspace')} disabled={quantity.length <= 1}>Smazat</Tile>
                 </header>
 
                 <div className="numpad">
-                    {numpadBlock}
-                    {this.getCharButton(0)}
+                    {repeat(number => (
+                        <Tile key={number} className={`char char-${number}`} isScaleable onClick={() => this.handleSelect(number)}>{number}</Tile>
+                    ), 9)}
 
+                    <Tile className="char char-0" isScaleable onClick={() => this.handleSelect(0)}>0</Tile>
                     <Tile className="char add-button" isScaleable isDoubleWidth onClick={() => this.handleAddToCart()}>Přidat do košíku</Tile>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 [data-component="Tile"] {
-    transition: all 200ms;
+    transition: transform 200ms;
 
     &.clickable {
         cursor: pointer;

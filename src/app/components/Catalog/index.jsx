@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import removeDuplicites from 'ramda/src/uniq';
-import AppContext from 'Helpers/context';
-import { _isInvalid } from 'Helpers/data';
+import { _d, context as AppContext } from '@honzachalupa/helpers';
 import './style';
 import Tile from 'Components/Tile';
 
@@ -15,6 +14,16 @@ export default withRouter(props => (
 ));
 
 class Catalog extends Component {
+    state = {
+        categoryLabels: {
+            cosmetics: 'Kosmetika',
+            drink: 'Nápoje',
+            fruit: 'Ovoce',
+            vegetable: 'Zelenina',
+            other: 'Ostatní'
+        }
+    };
+
     handleRedirection(url) {
         this.props.history.push(url);
     }
@@ -24,29 +33,19 @@ class Catalog extends Component {
 
         const categories = removeDuplicites(catalog.map(item => item.category)).sort();
 
-        return categories.map(id => {
-            return {
-                id,
-                label: this.getCategoryLabel(id),
-                items: catalog.filter(item => item.category === id)
-            };
-        });
+        return categories.map(id => ({
+            id,
+            label: this.getCategoryLabel(id),
+            items: catalog.filter(item => item.category === id)
+        }));
     }
 
     getCategoryLabel(id) {
-        const categoryLabels = {
-            cosmetics: 'Kosmetika',
-            drink: 'Nápoje',
-            fruit: 'Ovoce',
-            vegetable: 'Zelenina',
-            other: 'Ostatní'
-        };
+        const { categoryLabels } = this.state;
 
         const label = categoryLabels[id];
 
-        return _isInvalid(label)
-            ? id
-            : label;
+        return _d.isValid(label) ? label : id;
     }
 
     render() {
@@ -64,7 +63,7 @@ class Catalog extends Component {
                             </div>
 
                             {group.items.map(item => (
-                                <Tile key={item.id} className="item" type="button" disabled={item.isAdded} isScaleable onClick={() => this.handleRedirection(`/vyber-mnozstvi/${item.id}`)}>{item.name}</Tile>
+                                <Tile key={item.id} className="item" disabled={item.isAdded} isScaleable onClick={() => this.handleRedirection(`/vyber-mnozstvi/${item.id}`)}>{item.name}</Tile>
                             ))}
                         </Fragment>
                     ))}

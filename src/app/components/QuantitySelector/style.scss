@@ -21,7 +21,7 @@
         padding: 10px;
 
         .quantity,
-        .char-backspace {
+        .remove-button {
             height: 50px;
         }
 
@@ -49,10 +49,11 @@
                 float: left !important;
             }
 
-            .char-backspace {
+            .remove-button {
                 @extend .buttonReset;
 
                 width: 100%;
+                background-color: transparentize($accent-color, 0.3);
                 font-size: 14px;
                 text-transform: capitalize;
                 float: left;
@@ -99,6 +100,7 @@
                     transform: translateZ(10px);
 
                     &.add-button {
+                        background-color: transparentize(lime, 0.5);
                         font-size: 20px;
                     }
                 }

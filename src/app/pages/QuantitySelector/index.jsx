@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { _isInvalid } from 'Helpers/data';
+import { _d } from '@honzachalupa/helpers';
 import Layout from 'Layouts/Main';
 import QuantitySelector from 'Components/QuantitySelector';
 
-class QuantitySelectorPage extends Component {
+export default withRouter(class QuantitySelectorPage extends Component {
     state = {
         id: null
     };
@@ -12,7 +12,7 @@ class QuantitySelectorPage extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
 
-        if (_isInvalid(id)) {
+        if (!_d.isValid(id)) {
             this.handleRedirection('/');
         }
 
@@ -37,6 +37,4 @@ class QuantitySelectorPage extends Component {
             </section>
         );
     }
-}
-
-export default withRouter(QuantitySelectorPage);
+});

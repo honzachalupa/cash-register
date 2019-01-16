@@ -7,6 +7,7 @@ export default () => (
     <section>
         <Layout>
             <Catalog />
+
             <Cart />
         </Layout>
     </section>

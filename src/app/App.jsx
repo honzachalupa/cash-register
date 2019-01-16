@@ -5,10 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { autobind } from 'core-decorators';
 import config from 'app-config';
 import catalog from './catalog';
-import AppContext from 'Helpers/context';
-import { _setCookie, _getCookie } from 'Helpers/browser';
-import { _initServiceWorker } from 'Helpers/app';
-import { _isInvalid, _objectsAreDifferent } from 'Helpers/data';
+import { _a, _b, _d, context as AppContext } from '@honzachalupa/helpers';
 import './App.scss';
 import Page_Home from 'Pages/Home';
 import Page_QuantitySelector from 'Pages/QuantitySelector';
@@ -24,26 +21,26 @@ class App extends Component {
 
     componentDidMount() {
         if (config.caching) {
-            _initServiceWorker();
+            _a.initServiceWorker('/sw.js');
         }
 
         this.getCachedCart();
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const cartUpdated = _objectsAreDifferent(prevState.cart, this.state.cart);
+        const cartUpdated = _d.objectsAreDifferent(prevState.cart, this.state.cart);
 
         if (cartUpdated) {
             this.disableAddedItems();
 
-            _setCookie('cart', JSON.stringify(this.state.cart));
+            _b.setCookie('cart', JSON.stringify(this.state.cart));
         }
     }
 
     getCachedCart() {
-        const cart = _getCookie('cart');
+        const cart = _b.getCookie('cart');
 
-        if (!_isInvalid(cart)) {
+        if (_d.isValid(cart)) {
             this.setState({
                 cart
             });
@@ -54,11 +51,10 @@ class App extends Component {
         const { cart, catalog } = this.state;
 
         this.setState({
-            catalog: [...catalog].map(item => {
-                item.isAdded = cart.map(item => item.id).includes(item.id);
-
-                return item;
-            })
+            catalog: [...catalog].map(item => ({
+                ...item,
+                isAdded: cart.map(item => item.id).includes(item.id)
+            }))
         });
     }
 
